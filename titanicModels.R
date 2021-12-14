@@ -5,9 +5,6 @@ library(dplyr)
 library(mice)
 library(scales)
 library(randomForest) 
-library(party)
-library(partykit)
-
 
 
 trainingData <- read.csv("train.csv", stringsAsFactors = F)
@@ -49,9 +46,10 @@ for(i in 1:nrow(combinedData)){
 
 ###distributing men and women into seperate dataframes
 menAboard <- data.frame(trainingData[trainingData$Sex == 1, ])
+menAboad %>% na.omit()
 
 womenAboard <- data.frame(trainingData[trainingData$Sex == 0, ])
-
+womenAboard %>% na.omit()
 
 ####creating two more dataframes by age and survival
 maleAgeSurvival <- data.frame(menAboard$Age, menAboard$Survived)
@@ -68,6 +66,24 @@ trainingData %>%
   ggtitle("Frequency of Fares") + 
   geom_density(fill="#69b3a2", color="#e9ecef", alpha=0.8)
 
+
+
+####dual histogram featuring Men vs Women aboard by ages
+# 
+# hist(menAboard$Age,
+#      main = "Men's Ages",
+#      xlab = "Ages",
+#      ylab = "Passenger count",
+#      xlim = c(0,400),
+#      col = "light blue",
+#      breaks = 5)
+# 
+# 
+# hist(womenAboard$Age,
+#      main = "Women's Ages",
+#      col = "pink",
+#      add = TRUE)
+# 
 
 set.seed(129)
 mice_mod <- mice(combinedData[, !names(combinedData) %in% c('PassengerId','Name',
@@ -118,6 +134,12 @@ write.csv(finalPredict, file = 'Survival_Prediction.csv', row.names = F)
 # fit.lm <- lm(Survived ~ Sex + Age + Fare + SibSp + Parch, data= trainData)
 # print(fit.lm)
 # 
+# 
+# 
+#
+# fitlog_lg <- glm(Survived ~ Sex + Age + Fare + SibSp + Parch, data= trainData)
+# print(fitlog_lg)
+# # 
 # 
 # ###cluster optimizer function
 # wssplot <- function(data, nc=15, seed=1234)
