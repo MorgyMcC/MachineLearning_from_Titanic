@@ -130,6 +130,48 @@ write.csv(finalPredict, file = 'Survival_Prediction.csv', row.names = F)
 
 
 
+
+###Analyzing prediction
+
+combinedResults <- cbind(finalPredict, testingData)
+
+combinedResults <- combinedResults[ , colSums(is.na(combinedResults)) < nrow(combinedResults)]
+
+predictionSurvValues <- data.frame(combinedResults[combinedResults$Survived == 1, ])
+
+head(predictionSurvValues)
+
+predictionSurvValuesFemale <- data.frame(predictionSurvValues[predictionSurvValues$Sex == "female", ])
+nrow(predictionSurvValuesFemale)
+predictionSurvValuesMale <- data.frame(predictionSurvValues[predictionSurvValues$Sex == "male", ])
+nrow(predictionSurvValuesMale)
+
+head(predictionSurvValues)
+
+
+hist(predictionSurvValuesFemale$Age,
+     main = "Predicted Male vs Female Survivors", xlab = "Ages",
+     ylab = "Total Passengers",
+     col = "pink", ylim = c(0, 40))
+hist(predictionSurvValuesMale$Age, col = "light blue", add = TRUE)
+legend("topright", c("Female", "Male"), fill = c("pink", "light blue"))
+
+
+survFare <- mean(predictionSurvValuesMale$Fare)
+
+testFare <- mean(testingData$Fare)
+
+differenceFare <- survFare - testFare
+print(differenceFare)
+
+
+
+mean(as.numeric(predictionSurvValuesMale$Embarked))
+
+mean(as.numeric(predictionSurvValues$Pclass))
+table(as.numeric(predictionSurvValues$Pclass))
+
+
 # ####linear regression implementation and KMeans
 # fit.lm <- lm(Survived ~ Sex + Age + Fare + SibSp + Parch, data= trainData)
 # print(fit.lm)
