@@ -157,6 +157,12 @@ hist(predictionSurvValuesMale$Age, col = "light blue", add = TRUE)
 legend("topright", c("Female", "Male"), fill = c("pink", "light blue"))
 
 
+hist(predictionSurvValues$Fare,
+     main = "Fares of Survived Passenger",
+     xlab = "Price of Fare",
+     ylab = "Number of Fares Paid",
+     col = "light green")
+
 survFare <- mean(predictionSurvValuesMale$Fare)
 
 testFare <- mean(testingData$Fare)
@@ -171,6 +177,10 @@ mean(as.numeric(predictionSurvValuesMale$Embarked))
 mean(as.numeric(predictionSurvValues$Pclass))
 table(as.numeric(predictionSurvValues$Pclass))
 
+
+
+table(as.numeric(predictionSurvValues$Parch))
+table(as.numeric(predictionSurvValues$SibSp))
 
 # ####linear regression implementation and KMeans
 # fit.lm <- lm(Survived ~ Sex + Age + Fare + SibSp + Parch, data= trainData)
